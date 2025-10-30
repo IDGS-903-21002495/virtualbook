@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-
+//Componente Home que gestiona la vista principal después del login
 @Component({
   selector: 'app-home',
   standalone: true,
