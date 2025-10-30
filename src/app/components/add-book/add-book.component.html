@@ -1,0 +1,107 @@
+<div class="add-book-container">
+  <div class="add-book-card">
+    <div class="header">
+      <button class="btn-back" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Volver
+      </button>
+      <h2>Agregar Nuevo Libro</h2>
+      <p class="subtitle">Completa la información del libro</p>
+    </div>
+
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="titulo">Título del Libro</label>
+        <input
+          type="text"
+          id="titulo"
+          formControlName="titulo"
+          placeholder="Orgullo y prejuicio"
+          [class.error]="titulo?.invalid && titulo?.touched"
+        />
+        <div class="error-message" *ngIf="titulo?.invalid && titulo?.touched">
+          <span *ngIf="titulo?.errors?.['required']">El título es requerido</span>
+          <span *ngIf="titulo?.errors?.['minlength']">El título debe tener al menos 3 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="autor">Autor</label>
+        <input
+          type="text"
+          id="autor"
+          formControlName="autor"
+          placeholder="Jane Austen"
+          [class.error]="autor?.invalid && autor?.touched"
+        />
+        <div class="error-message" *ngIf="autor?.invalid && autor?.touched">
+          <span *ngIf="autor?.errors?.['required']">El autor es requerido</span>
+          <span *ngIf="autor?.errors?.['minlength']">El autor debe tener al menos 3 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="genero">Género</label>
+        <select
+          id="genero"
+          formControlName="genero"
+          [class.error]="genero?.invalid && genero?.touched"
+        >
+          <option value="" disabled selected>Selecciona un género</option>
+          <option value="Romance">Romance</option>
+          <option value="Ficción">Ficción</option>
+          <option value="No Ficción">No Ficción</option>
+          <option value="Ciencia Ficción">Ciencia Ficción</option>
+          <option value="Fantasía">Fantasía</option>
+          <option value="Misterio">Misterio</option>
+          <option value="Thriller">Thriller</option>
+          <option value="Terror">Terror</option>
+          <option value="Historia">Historia</option>
+          <option value="Biografía">Biografía</option>
+          <option value="Poesía">Poesía</option>
+          <option value="Drama">Drama</option>
+          <option value="Aventura">Aventura</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <div class="error-message" *ngIf="genero?.invalid && genero?.touched">
+          <span *ngIf="genero?.errors?.['required']">El género es requerido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          formControlName="descripcion"
+          placeholder="Escribe una breve descripción del libro..."
+          rows="5"
+          [class.error]="descripcion?.invalid && descripcion?.touched"
+        ></textarea>
+        <div class="error-message" *ngIf="descripcion?.invalid && descripcion?.touched">
+          <span *ngIf="descripcion?.errors?.['required']">La descripción es requerida</span>
+          <span *ngIf="descripcion?.errors?.['minlength']">La descripción debe tener al menos 10 caracteres</span>
+        </div>
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="error-message server-error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Agregar Libro</span>
+        <span *ngIf="isLoading">Agregando...</span>
+      </button>
+    </form>
+  </div>
+</div>

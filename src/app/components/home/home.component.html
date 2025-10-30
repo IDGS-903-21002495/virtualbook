@@ -1,0 +1,75 @@
+<div class="home-container">
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>VirtualBook</h1>
+      </div>
+      <nav class="nav">
+        <div class="user-info">
+          <span class="user-name">{{ userName }}</span>
+          <span class="user-email">{{ userEmail }}</span>
+        </div>
+        <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2>¡Bienvenido, {{ userName }}!</h2>
+      <p class="subtitle">Estás en la página de inicio de VirtualBook</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path
+              d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+            ></path>
+          </svg>
+        </div>
+        <h3>Mis Libros</h3>
+        <p>Explora tu biblioteca personal de libros virtuales</p>
+        <button class="btn-card" (click)="goToMyBooks()">Ver Libros</button>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </div>
+        <h3>Agregar Libro</h3>
+        <p>Añade nuevos libros a tu colección</p>
+        <button class="btn-card" (click)="goToAddBook()">Agregar</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 VirtualBook. Todos los derechos reservados.</p>
+  </footer>
+</div>

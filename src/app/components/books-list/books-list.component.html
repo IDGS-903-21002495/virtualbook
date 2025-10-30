@@ -1,0 +1,55 @@
+<div class="books-container">
+  <div class="header">
+    <button class="back-button" (click)="goBack()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Volver
+    </button>
+    <h1>Mis Libros</h1>
+    <button class="add-button" (click)="goToAddBook()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      Agregar Libro
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando libros...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && books.length === 0" class="empty-state">
+    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+    </svg>
+    <h2>No tienes libros registrados</h2>
+    <p>Comienza agregando tu primer libro a tu biblioteca</p>
+    <button class="primary-button" (click)="goToAddBook()">Agregar mi primer libro</button>
+  </div>
+
+  <div *ngIf="!isLoading && books.length > 0" class="books-grid">
+    <div *ngFor="let book of books" class="book-card">
+      <div class="book-header">
+        <h3>{{ book.titulo }}</h3>
+        <span class="genre-badge">{{ book.genero }}</span>
+      </div>
+      <div class="book-author">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        {{ book.autor }}
+      </div>
+      <div class="book-description">
+        {{ book.descripcion }}
+      </div>
+    </div>
+  </div>
+</div>
