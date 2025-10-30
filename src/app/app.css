@@ -1,0 +1,27 @@
+/* Botón de test Sentry */
+.sentry-test-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #362d59;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(54, 45, 89, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.sentry-test-btn:hover {
+  background-color: #4a3f6f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(54, 45, 89, 0.4);
+}
+
+.sentry-test-btn:active {
+  transform: translateY(0);
+}
