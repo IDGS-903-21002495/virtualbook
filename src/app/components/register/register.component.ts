@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 //Componente de Register
+//Registro de nuevos usuarios
 @Component({
   selector: 'app-register',
   standalone: true,
