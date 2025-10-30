@@ -95,9 +95,23 @@ jobs:
 
       - name: Deploy to Netlify
         run: |
+          echo "Checking directory structure..."
+          ls -la dist/
+          
           if [ -d "dist/browser" ]; then
+            echo "Found dist/browser directory"
+            ls -la dist/browser/
+            echo "Deploying from dist/browser"
             netlify deploy --dir=dist/browser --prod --message "staging deployment ${{ github.sha }}"
+          elif [ -d "dist/virtualbook/browser" ]; then
+            echo "Found dist/virtualbook/browser directory"
+            ls -la dist/virtualbook/browser/
+            echo "Deploying from dist/virtualbook/browser"
+            netlify deploy --dir=dist/virtualbook/browser --prod --message "staging deployment ${{ github.sha }}"
           else
+            echo "Using dist directory"
+            ls -la dist/
+            echo "Deploying from dist"
             netlify deploy --dir=dist --prod --message "staging deployment ${{ github.sha }}"
           fi
         env:

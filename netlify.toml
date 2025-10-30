@@ -1,6 +1,6 @@
 [build]
   command = ""
-  publish = "dist"
+  publish = "dist/browser"
   ignore = "true"
 
 [build.environment]
