@@ -65,7 +65,7 @@ jobs:
         run: npx ng build --configuration=staging
 
       - name: Deploy to Netlify
-        uses: netlify/actions/cli@v4
+        uses: netlify/actions@v2
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.VIRTUALBOOK }}
         with:
