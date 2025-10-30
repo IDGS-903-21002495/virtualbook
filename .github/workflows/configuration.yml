@@ -8,7 +8,39 @@ on:
   workflow_dispatch:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npx ng build --configuration=staging
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-staging
+          path: dist/
+          retention-days: 7
+
+      - name: Generate build summary
+        run: |
+          echo "### Build Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Build completed successfully" >> $GITHUB_STEP_SUMMARY
+          echo "Artifacts uploaded and ready for testing" >> $GITHUB_STEP_SUMMARY
+
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,13 +68,10 @@ jobs:
       - name: Generate test summary
         if: always()
         run: |
-          echo "### Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "### 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Tests executed successfully" >> $GITHUB_STEP_SUMMARY
           echo "Coverage report available in artifacts" >> $GITHUB_STEP_SUMMARY
-
-      - name: Build application
-        run: npx ng build --configuration=staging
 
   deploy:
     needs: test
@@ -51,22 +80,18 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          name: build-staging
+          path: dist/
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build for staging
-        run: npx ng build --configuration=staging
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        uses: netlify/actions@v2
+        run: netlify deploy --dir=dist --prod --message "staging deployment ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.VIRTUALBOOK }}
-        with:
-          args: deploy --dir=dist --site ${{ secrets.NETLIFY_SITE_ID }} --prod --message "staging deployment ${{ github.sha }}"
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
