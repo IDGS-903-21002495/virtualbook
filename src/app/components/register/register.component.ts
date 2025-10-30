@@ -35,7 +35,7 @@ export class RegisterComponent {
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
   }
-
+// Validador personalizado para verificar que las contraseñas coincidan
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
