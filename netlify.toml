@@ -1,5 +1,7 @@
 [build]
+  command = ""
   publish = "dist"
+  ignore = "true"
 
 [build.environment]
   NODE_VERSION = "20"

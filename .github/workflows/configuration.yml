@@ -96,9 +96,9 @@ jobs:
       - name: Deploy to Netlify
         run: |
           if [ -d "dist/browser" ]; then
-            netlify deploy --dir=dist/browser --prod --build=false --message "staging deployment ${{ github.sha }}"
+            netlify deploy --dir=dist/browser --prod --message "staging deployment ${{ github.sha }}"
           else
-            netlify deploy --dir=dist --prod --build=false --message "staging deployment ${{ github.sha }}"
+            netlify deploy --dir=dist --prod --message "staging deployment ${{ github.sha }}"
           fi
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.VIRTUALBOOK }}
