@@ -60,4 +60,20 @@ export class BooksListComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/home']);
   }
+
+  deleteBook(book: BookResponse): void {
+    if (confirm(`¿Estás seguro de que deseas eliminar "${book.titulo}"?`)) {
+      this.librosService.deleteBook(this.userId, book.id).subscribe({
+        next: () => {
+          console.log('Libro eliminado exitosamente');
+          // Recargar la lista de libros después de eliminar
+          this.loadBooks();
+        },
+        error: (error: any) => {
+          console.error('Error al eliminar el libro:', error);
+          alert('Error al eliminar el libro. Por favor, intenta nuevamente.');
+        }
+      });
+    }
+  }
 }

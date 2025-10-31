@@ -56,6 +56,6 @@ export class LibrosService {
   }
 
   deleteBook(userId: number, bookId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${userId}/libro/${bookId}`);
+    return this.http.delete(`${this.baseUrl}/${bookId}`);
   }
 }

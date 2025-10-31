@@ -71,4 +71,18 @@ describe('LibrosService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockBooks);
   });
+
+  it('should delete a book', () => {
+    const userId = 1;
+    const bookId = 2;
+    const mockResponse = { mensaje: 'El libro ha sido eliminado correctamente.' };
+
+    service.deleteBook(userId, bookId).subscribe(response => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(`https://virtualbook-backend.onrender.com/api/Libros/${bookId}`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(mockResponse);
+  });
 });
