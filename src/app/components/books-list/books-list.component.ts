@@ -57,6 +57,10 @@ export class BooksListComponent implements OnInit {
     this.router.navigate(['/add-book']);
   }
 
+  editBook(book: BookResponse): void {
+    this.router.navigate(['/edit-book', book.id]);
+  }
+
   goBack(): void {
     this.router.navigate(['/home']);
   }

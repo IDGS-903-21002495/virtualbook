@@ -12,5 +12,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'add-book', component: AddBookComponent, canActivate: [authGuard] },
+  { path: 'edit-book/:id', component: AddBookComponent, canActivate: [authGuard] },
   { path: 'books', component: BooksListComponent, canActivate: [authGuard] }
 ];

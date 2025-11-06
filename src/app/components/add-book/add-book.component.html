@@ -8,8 +8,8 @@
         </svg>
         Volver
       </button>
-      <h2>Agregar Nuevo Libro</h2>
-      <p class="subtitle">Completa la información del libro</p>
+      <h2>{{ isEditMode ? 'Editar Libro' : 'Agregar Nuevo Libro' }}</h2>
+      <p class="subtitle">{{ isEditMode ? 'Modifica la información del libro' : 'Completa la información del libro' }}</p>
     </div>
 
     <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
@@ -99,8 +99,8 @@
         class="btn-submit"
         [disabled]="isLoading"
       >
-        <span *ngIf="!isLoading">Agregar Libro</span>
-        <span *ngIf="isLoading">Agregando...</span>
+        <span *ngIf="!isLoading">{{ isEditMode ? 'Actualizar Libro' : 'Agregar Libro' }}</span>
+        <span *ngIf="isLoading">{{ isEditMode ? 'Actualizando...' : 'Agregando...' }}</span>
       </button>
     </form>
   </div>
