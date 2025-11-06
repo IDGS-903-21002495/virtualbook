@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LibrosService, BookRequest, BookResponse } from '../../services/libros.service';
 
@@ -17,12 +18,16 @@ export class AddBookComponent implements OnInit {
   private authService = inject(AuthService);
   private librosService = inject(LibrosService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   bookForm: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
   isLoading: boolean = false;
   userId: number = 0;
+  // Edit mode
+  isEditMode: boolean = false;
+  editingBookId: number | null = null;
 
   constructor() {
     this.bookForm = this.fb.group({
@@ -44,6 +49,17 @@ export class AddBookComponent implements OnInit {
     if (user) {
       this.userId = user.id;
     }
+
+    // Revisar si viene un id en la ruta para modo edición
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      const bookId = Number(idParam);
+      if (!isNaN(bookId)) {
+        this.isEditMode = true;
+        this.editingBookId = bookId;
+        this.loadBookForEdit(bookId);
+      }
+    }
   }
 
   onSubmit(): void {
@@ -59,29 +75,68 @@ export class AddBookComponent implements OnInit {
         descripcion: this.bookForm.value.descripcion
       };
 
-      this.librosService.addBook(this.userId, bookData).subscribe({
-        next: (response: BookResponse) => {
-          this.isLoading = false;
-          this.successMessage = '¡Libro agregado exitosamente!';
-          console.log('Libro agregado:', response);
-          
-          // Limpiar formulario
-          this.bookForm.reset();
-          
-          // Redirigir después de 2 segundos
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 2000);
-        },
-        error: (error: unknown) => {
-          this.isLoading = false;
-          this.errorMessage = (error as any).error?.mensaje || (error as any).error?.message || 'Error al agregar el libro. Por favor, intenta nuevamente.';
-          console.error('Error al agregar libro:', error);
-        }
-      });
+      if (this.isEditMode && this.editingBookId != null) {
+        // Modo edición
+        this.librosService.updateBook(this.userId, this.editingBookId, bookData).subscribe({
+          next: (response: BookResponse) => {
+            this.isLoading = false;
+            this.successMessage = '¡Libro actualizado exitosamente!';
+            console.log('Libro actualizado:', response);
+            setTimeout(() => {
+              this.router.navigate(['/home']);
+            }, 2000);
+          },
+          error: (error: unknown) => {
+            this.isLoading = false;
+            this.errorMessage = (error as any).error?.mensaje || (error as any).error?.message || 'Error al actualizar el libro. Por favor, intenta nuevamente.';
+            console.error('Error al actualizar libro:', error);
+          }
+        });
+      } else {
+        // Modo agregar
+        this.librosService.addBook(this.userId, bookData).subscribe({
+          next: (response: BookResponse) => {
+            this.isLoading = false;
+            this.successMessage = '¡Libro agregado exitosamente!';
+            console.log('Libro agregado:', response);
+            
+            // Limpiar formulario
+            this.bookForm.reset();
+            
+            // Redirigir después de 2 segundos
+            setTimeout(() => {
+              this.router.navigate(['/home']);
+            }, 2000);
+          },
+          error: (error: unknown) => {
+            this.isLoading = false;
+            this.errorMessage = (error as any).error?.mensaje || (error as any).error?.message || 'Error al agregar el libro. Por favor, intenta nuevamente.';
+            console.error('Error al agregar libro:', error);
+          }
+        });
+      }
     } else {
       this.markFormGroupTouched(this.bookForm);
     }
+  }
+
+  private loadBookForEdit(bookId: number): void {
+    this.isLoading = true;
+    this.librosService.getBookById(this.userId, bookId).subscribe({
+      next: (book: BookResponse) => {
+        this.isLoading = false;
+        this.bookForm.patchValue({
+          titulo: book.titulo,
+          autor: book.autor,
+          genero: book.genero,
+          descripcion: book.descripcion
+        });
+      },
+      error: (err: unknown) => {
+        this.isLoading = false;
+        console.error('Error al cargar libro para edición:', err);
+      }
+    });
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

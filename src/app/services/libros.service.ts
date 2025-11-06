@@ -24,23 +24,23 @@ export interface BookResponse {
 })
 export class LibrosService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://virtualbook-backend.onrender.com/api/Libros';
+  private baseUrl = 'https://virtualbook-backend.onrender.com/api/libros';
 
   addBook(userId: number, bookData: BookRequest): Observable<BookResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
-    const url = `${this.baseUrl}/${userId}/libro`;
+    const url = `${this.baseUrl}/usuario/${userId}/libro`;
     return this.http.post<BookResponse>(url, bookData, { headers });
   }
 
   getBooksByUser(userId: number): Observable<BookResponse[]> {
-    return this.http.get<BookResponse[]>(`${this.baseUrl}/${userId}`);
+    return this.http.get<BookResponse[]>(`${this.baseUrl}/usuario/${userId}`);
   }
 
   getBookById(userId: number, bookId: number): Observable<BookResponse> {
-    return this.http.get<BookResponse>(`${this.baseUrl}/${userId}/libro/${bookId}`);
+    return this.http.get<BookResponse>(`${this.baseUrl}/usuario/${userId}/libro/${bookId}`);
   }
 
   updateBook(userId: number, bookId: number, bookData: BookRequest): Observable<BookResponse> {
@@ -49,13 +49,13 @@ export class LibrosService {
     });
 
     return this.http.put<BookResponse>(
-      `${this.baseUrl}/${userId}/libro/${bookId}`,
+      `${this.baseUrl}/usuario/${userId}/libro/${bookId}`,
       bookData,
       { headers }
     );
   }
 
   deleteBook(userId: number, bookId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${bookId}`);
+    return this.http.delete(`${this.baseUrl}/usuario/${userId}/libro/${bookId}`);
   }
 }
