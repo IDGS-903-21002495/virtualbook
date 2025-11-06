@@ -45,7 +45,7 @@ describe('LibrosService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne('https://virtualbook-backend.onrender.com/api/Libros/1/libro');
+    const req = httpMock.expectOne('https://virtualbook-backend.onrender.com/api/libros/usuario/1/libro');
     expect(req.request.method).toBe('POST');
     req.flush(mockResponse);
   });
@@ -67,7 +67,7 @@ describe('LibrosService', () => {
       expect(books).toEqual(mockBooks);
     });
 
-    const req = httpMock.expectOne(`https://virtualbook-backend.onrender.com/api/Libros/${userId}`);
+    const req = httpMock.expectOne(`https://virtualbook-backend.onrender.com/api/libros/usuario/${userId}`);
     expect(req.request.method).toBe('GET');
     req.flush(mockBooks);
   });
@@ -81,7 +81,7 @@ describe('LibrosService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`https://virtualbook-backend.onrender.com/api/Libros/${bookId}`);
+    const req = httpMock.expectOne(`https://virtualbook-backend.onrender.com/api/libros/usuario/${userId}/libro/${bookId}`);
     expect(req.request.method).toBe('DELETE');
     req.flush(mockResponse);
   });
